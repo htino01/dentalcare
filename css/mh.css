@@ -1,0 +1,15 @@
+body {
+  margin: 0;
+  background-image: url("../img/fondo02.jpeg");
+  background-color: #2d57ab;
+  height: 500px;
+  background-position: center;
+  background-repeat: repeat;
+  background-size: cover;
+  position: relative;
+}
+#entidad{
+  border: 3px solid #555;
+  width: 25%;
+  /*height: 150px;*/
+}
