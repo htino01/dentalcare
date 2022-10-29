@@ -24,15 +24,14 @@
       <div class="row">
         <div class="col-lg-3 col-sm-1"></div>
         <div class="col-lg-6 col-sm-10">
-          <form>
+          <form method="post" action="../sql/agregar_cita.php" name="login" id="form">
             <table class="table">
               <tbody class="table-group-divider">
                 <tr>
                   <td>&nbsp</td>
-                  <td align="right">Nombre:</td>
+                  <td align="right">Responsable:</td>
                   <td align="left">
                     <label for="" class="form-label"><?php echo $_SESSION['nombre']; ?></label>
-                    <!--<input type="text" id="nombre" class="form-label" value="<?php echo $_SESSION['nombre']; ?>">-->
                   </td>
                   <td>&nbsp</td>
                 </tr>
@@ -40,7 +39,15 @@
                   <td>&nbsp</td>
                   <td align="right">Paciente:</td>
                   <td align="left">
-                    <input type="text" id="nombre" class="form-label" placeholder="Nombre del paciente">
+                    <input type="text" id="paciente" name="paciente" class="form-label" placeholder="Nombre del paciente" required>
+                  </td>
+                  <td>&nbsp</td>
+                </tr>
+                <tr>
+                  <td>&nbsp</td>
+                  <td align="right">Edad:</td>
+                  <td align="left">
+                    <input type="number" id="edad" name="edad" class="form-label" placeholder="Edad del paciente" required>
                   </td>
                   <td>&nbsp</td>
                 </tr>
@@ -55,11 +62,11 @@
                   <td align="right">Hora:</td>
                   <td align="left">
                     <div class="form-floating">
-                      <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                      <select class="form-select" id="floatingSelect" name="hora" aria-label="Floating label select example">
                         <option selected>Seleccionar</option>
-                        <option value="1">9:00 a.m.</option>
-                        <option value="2">11:00 a.m.</option>
-                        <option value="3">01:30 p.m.</option>
+                        <option value="09:00:00">9:00 a.m.</option>
+                        <option value="11:00:00">11:00 a.m.</option>
+                        <option value="13:30:00">01:30 p.m.</option>
                       </select>
                       <label for="floatingSelect">Horarios Disponible</label>
                     </div>

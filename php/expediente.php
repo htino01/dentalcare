@@ -3,6 +3,18 @@
   ini_set('display_startup_errors', 1);
   error_reporting(E_ALL);
   session_start();
+  require("conexion.php");
+  $idCita = $_POST["idCita"];
+
+  $consulta = "SELECT * FROM cita WHERE id = $idCita";
+
+  if($resultado = $conn->query($consulta)) {
+    while($row = $resultado->fetch_array()) {
+      $paciente = $row["paciente"];
+      $cita     = $row["id"];
+    }
+    $resultado->close();
+  }
 ?>
 <!doctype html>
 <html lang="en">
@@ -24,11 +36,11 @@
       <div class="row">
         <div class="col-lg-3"></div>
         <div class="col-lg-6 col-sm-12">
-          <form>
+          <form method="post" action="../sql/guardar_expediente.php" name="login" id="form">
             <table>
               <tbody class="table-group-divider">
                 <tr>
-                  <td align="left">Nombre:</td>
+                  <td align="left">Responsable:</td>
                   <td align="left">
                     <!--<label for="" class="form-label"><?php echo $_SESSION['nombre']; ?></label>-->
                     <input type="text" id="nombre" class="form-label" value="<?php echo $_SESSION['nombre']; ?>" disabled>
@@ -39,39 +51,30 @@
                 <tr>
                   <td align="left">Paciente:</td>
                   <td align="left">
-                    <input type="text" id="paciente" class="form-label" placeholder="Nombre">
+                    <input type="text" id="paciente" name="paciente" class="form-label" value="<?php echo $paciente; ?>" disabled>
                   </td>
                   <td align="left">Fecha:</td>
-                  <td align="left"><input type="date" name="fecha" step="1" class="form-label" value="<?php echo date('Y-m-d');?>"></td>
+                  <td align="left"><input type="date" name="fecha" step="1" class="form-label" value="<?php echo date('Y-m-d');?>" disabled></td>
                 </tr>
                 <tr>
                   <td align="left">Temperatura:</td>
-                  <td align="left"><input type="text" id="temperatura" class="form-label" placeholder="°C"></td>
-                  <td align="left">Codigo:</td>
-                  <td><input type="text" id="codigo" class="form-label" value=""></td>
+                  <td align="left"><input type="text" id="temperatura" name="temperatura" class="form-label" placeholder="°C" required></td>
+                  <td align="left">Cita:</td>
+                  <td align="left"><input type="text" id="codigo" name="idCita" class="form-label" value="<?php echo $cita; ?>"></td>
                 </tr>
                 <tr>
 
                   <td align="left">Presión:</td>
-                  <td align="left"><input type="text" id="Arterial" class="form-label" placeholder="120/80"></td>
+                  <td align="left"><input type="text" id="presion" name="presion" class="form-label" placeholder="120/80" required></td>
                   <td>&nbsp</td>
                   <td>&nbsp</td>
                 </tr>
                 <tr>
                   <td align="left">Descripción:</td>
-                  <td colspan="3" align="left">
-                    <textarea class="form-control" id="descripcion" rows="10"></textarea>
-                  </td>
+                  <td colspan="3"><textarea class="form-control" id="descripcion" name="descripcion" rows="10" required></textarea></td>
                 </tr>
                 <tr>
-                  <td>&nbsp</td>
-                  <td>&nbsp</td>
-                  <td>&nbsp</td>
-                  <td align="right">
-                    <br>
-                    <button type="button" class="btn btn-danger btn-sm">Cancelar</button>
-                    <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
-                  </td>
+                  <td colspan="4" align="right"><button type="submit" class="btn btn-primary btn-sm">Guardar</button></td>
                 </tr>
               </tbody>
             </table>

@@ -3,6 +3,7 @@
   ini_set('display_startup_errors', 1);
   error_reporting(E_ALL);
   session_start();
+  require("conexion.php");
 ?>
 <!doctype html>
 <html lang="en">
@@ -25,23 +26,14 @@
       <div class="row">
         <div class="col-lg-3 col-sm-1"></div>
         <div class="col-lg-6 col-sm-10">
-          <form>
+          <form method="post" action="../sql/agregar_usuario.php" name="login" id="form">
             <table class="table">
               <tbody class="table-group-divider">
                 <tr>
                   <td>&nbsp</td>
                   <td align="right">Nombre:</td>
                   <td align="left">
-                    <label for="" class="form-label"><?php echo $_SESSION['nombre']; ?></label>
-                    <!--<input type="text" id="nombre" class="form-label" value="<?php echo $_SESSION['nombre']; ?>">-->
-                  </td>
-                  <td>&nbsp</td>
-                </tr>
-                <tr>
-                  <td>&nbsp</td>
-                  <td align="right">Paciente:</td>
-                  <td align="left">
-                    <input type="text" id="nombre" class="form-label" placeholder="Nombre del paciente">
+                    <input type="text" id="nombre" name="nombre" class="form-label" placeholder="Nombre del usuario" required>
                   </td>
                   <td>&nbsp</td>
                 </tr>
@@ -49,7 +41,16 @@
                   <td>&nbsp</td>
                   <td align="right">Usuario:</td>
                   <td align="left">
-                    <input type="text" id="usuario" class="form-label" placeholder="test@contoso.com">
+                    <input type="text" id="usuario" name="usuario" class="form-label" placeholder="test@contoso.com" required>
+                  </td>
+                  <td>&nbsp</td>
+                </tr>
+                <tr>
+                  <td>&nbsp</td>
+                  <td align="right">Contraseña:</td>
+                  <td align="left">
+                    <input type="password" id="contrasena" name="contrasena" class="form-label" placeholder="Contraseña" required>
+                    
                   </td>
                   <td>&nbsp</td>
                 </tr>
@@ -58,25 +59,10 @@
                   <td align="right">Tipo:</td>
                   <td align="left">
                     <div class="form-floating">
-                      <select id="tipo" aria-label="Floating label select example">
-                        <option value="1">Doctor</option>
-                        <option value="2">Paciente</option>
-                        <option value="3">Usuario de Sistema</option>
-                      </select>
-                    </div>
-                  </td>
-                  <td>&nbsp</td>
-                </tr>
-                <tr>
-                  <td>&nbsp</td>
-                  <td align="right">Modulo:</td>
-                  <td align="left">
-                    <div class="form-floating">
-                      <select id="tipo" aria-label="Floating label select example">
-                        <option value="1">Reservar Cita</option>
-                        <option value="2">Consultar Cita</option>
-                        <option value="3">Expediente</option>
-                        <option value="3">Administrar Usuarios</option>
+                      <select id="tipo" name="tipo" aria-label="Floating label select example">
+                        <option value="2">Doctor</option>
+                        <option value="3">Paciente</option>
+                        <option value="1">Administrador</option>
                       </select>
                     </div>
                   </td>
@@ -90,49 +76,55 @@
                 </tr>
               </tbody>
             </table>
-            <table class="table">
+<?php
+  $consulta = "SELECT u.id, u.nombre, u.usuario, r.nombre as rol 
+               FROM usuarios u 
+               JOIN rol r ON u.id_rol = r.id
+               WHERE u.id_estado = 1
+               ORDER BY u.id";
+
+  echo '
+  <table class="table table-striped">
               <thead>
                 <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Nombre</th>
+                  <th scope="col">Cod.</th>
+                  <th scope="col">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nombre&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                   <th scope="col">Usuario</th>
                   <th scope="col">Tipo</th>
                   <th scope="col">Acción</th>
                 </tr>
-              </thead>
-              <tbody>
+              </thead>';
+
+  if($resultado = $conn->query($consulta)) {
+    while($row = $resultado->fetch_array()) {
+      $iduser = $row["id"];
+      $nombre = $row["nombre"];
+      $userok = $row["usuario"];
+      $tipo   = $row["rol"];
+
+  echo '
+  <tbody>
                 <tr>
-                  <th scope="row">1</th>
-                  <td align="left">Héctor Tino</td>
-                  <td align="left">ia.htino@ufg.edu.sv</td>
-                  <td align="left">Usuario de Sistema</td>
+                  <th scope="row">'.$iduser.'</th>
+                  <td align="left">'.$nombre.'</td>
+                  <td align="left">'.$userok.'</td>
+                  <td align="left">'.$tipo.'</td>
                   <td>
-                    <span class="material-symbols-outlined">delete</span>
-                    <span class="material-symbols-outlined">edit_note</span>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td align="left">Estefany Hernandez</td>
-                  <td align="left">@ufg.edu.sv</td>
-                  <td align="left">Paciente</td>
-                  <td>
-                    <span class="material-symbols-outlined">delete</span>
-                    <span class="material-symbols-outlined">edit_note</span>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td align="left">Edgard Merchez</td>
-                  <td align="left">@ufg.edu.sv</td>
-                  <td align="left">Doctor</td>
-                  <td>
-                    <span class="material-symbols-outlined">delete</span>
-                    <span class="material-symbols-outlined">edit_note</span>
+                    <form action="../sql/inactivar_usuario.php" method="post">
+                      <input type="hidden" name="idInactivar" value="'.$iduser.'">
+                      <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                    </form>
+                    <!--<a href="" name="delete"><span class="material-symbols-outlined">delete</span></a>-->
+                    <!--<a href="" name="edit"><span class="material-symbols-outlined">edit_note</span></a>-->
                   </td>
                 </tr>
               </tbody>
-            </table>
+  ';
+      
+    }
+    $resultado->close();
+  }
+?>    
           </form>
         </div>
         <div class="col-lg-3 col-sm-1"></div>

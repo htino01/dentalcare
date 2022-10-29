@@ -20,6 +20,8 @@ if(isset($_POST["enviar"])) {
          $userok = $row["usuario"];
          $passok = $row["clave"];
          $_SESSION['nombre'] = $row["nombre"];
+         $_SESSION['id_usuario'] = $row['id'];
+         $_SESSION['id_rol'] = $row['id_rol'];
       }
       $resultado->close();
    }

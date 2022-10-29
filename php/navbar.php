@@ -1,3 +1,11 @@
+<?php
+error_reporting(0);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
+session_start();
+$rol = $_SESSION['id_rol'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,11 +21,28 @@
       <img src="../img/logo_dentalcare02.png" width="75px">
       <button class="w3-bar-item w3-button w3-large" onclick="w3_close()">Close &times;</button>
       <a href="index.php" class="w3-bar-item w3-button">HOME</a>
-      <a href="reservar_cita.php" class="w3-bar-item w3-button">Reservar Cita</a>
-      <a href="consultar_cita.php" class="w3-bar-item w3-button">Consultar Cita</a>
-      <a href="expediente.php" class="w3-bar-item w3-button">Expediente</a>
-      <a href="adm_usuarios.php" class="w3-bar-item w3-button">Administrar Usuarios</a>
-      <a href="salir.php" class="w3-bar-item w3-button w3-hover-text-red">Salir</a>
+      <?php
+        if($rol == 1){
+          echo '
+            <a href="reservar_cita.php" class="w3-bar-item w3-button">Reservar Cita</a>
+            <a href="consultar_cita.php" class="w3-bar-item w3-button">Consultar Cita</a>
+            <a href="expediente.php" class="w3-bar-item w3-button">Expediente</a>
+            <a href="adm_usuarios.php" class="w3-bar-item w3-button">Administrar Usuarios</a>
+            <a href="salir.php" class="w3-bar-item w3-button w3-hover-text-red">Salir</a>
+          ';
+        } elseif($rol == 2) {
+          echo '
+            <a href="consultar_cita.php" class="w3-bar-item w3-button">Consultar Cita</a>
+            <a href="salir.php" class="w3-bar-item w3-button w3-hover-text-red">Salir</a>
+          ';
+        } else {
+          echo '
+            <a href="reservar_cita.php" class="w3-bar-item w3-button">Reservar Cita</a>
+            <a href="consultar_cita.php" class="w3-bar-item w3-button">Consultar Cita</a>
+            <a href="salir.php" class="w3-bar-item w3-button w3-hover-text-red">Salir</a>
+          ';     
+        }
+      ?>
     </div>
 
     <div id="main">
